@@ -1,0 +1,26 @@
+{
+  "name": "api-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "*",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "eslint": "^8.27.0",
+    "express": "*",
+    "mysql": "*",
+    "swagger-jsdoc": "*",
+    "swagger-ui-express": "*"
+  },
+  "devDependencies": {
+    "nodemon": "*"
+  },
+  "type": "module"
+}
