@@ -169,11 +169,6 @@ app.delete('/departamentos/:idDepartamento', (req, res) => {
 })
 
 
-// Only a test for vercel
-app.get('/', (req, res) => {
-  res.send('Bombando na Vercel')
-})
-
 const port = 80
 app.listen(port, () => {
   console.log('Example app listening at http://localhost:%s', port)
