@@ -168,7 +168,13 @@ app.delete('/departamentos/:idDepartamento', (req, res) => {
   })
 })
 
-const port = 3030
+
+// Only a test for vercel
+app.get('/', (req, res) => {
+  res.send('Bombando na Vercel')
+})
+
+const port = 80
 app.listen(port, () => {
   console.log('Example app listening at http://localhost:%s', port)
 })
