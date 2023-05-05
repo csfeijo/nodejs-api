@@ -1,25 +1,24 @@
-import express from 'express'
-import cors from 'cors'
-import bodyParser from 'body-parser'
-import con from './connection.js'
-import swaggerJSDoc from 'swagger-jsdoc'
-import swaggerUI from 'swagger-ui-express'
+const express = require('express')
+const cors = require('cors')
+const bodyParser = require('body-parser')
+const con = require('./connection.js')
 
+const swaggerUI = require('swagger-ui-express')
+const swaggerJSDoc = require('swagger-jsdoc')
+const swaggerOptions = require('./swaggerOptions')
+
+// Para gerar o arquivo de definitions para o Postman
+const swaggerDefinition = require('./swaggerDefinition.js')
+const swaggerAutogen = require('swagger-autogen')()
+const outputFile = './swagger-output.json'
+const endpointsFiles = ['./index.js']
+swaggerAutogen(outputFile, endpointsFiles, swaggerDefinition)
 
 const app = express()
 app.use(cors())
-const options = {
-  definition: {
-    info: {
-      title: 'API Node JS', // (obrigatório)
-      version: '1.0.0', // (obrigatório)
-    },
-  },
-  // Path da aplicação principal (onde estão as rotas documentadas)
-  apis: ['server.js'],
-}
+
 // Adicionamos o gerador de documentação em uma const
-const swaggerSpec = swaggerJSDoc(options)
+const swaggerSpecs = swaggerJSDoc(swaggerOptions)
 
 
 // Middleware para arquivos estáticos (CSS, IMG, JS, etc)
@@ -28,11 +27,14 @@ app.use(express.static('public'))
 // Configuramos o servidor para utilizar o middleware do body-parser
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use('/swagger-ui', swaggerUI.serve, swaggerUI.setup(swaggerSpec))
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpecs))
+
+// Usa o 
+app.get('/collection', (req, res) => res.json(require(outputFile)))
+
 
 /**
  * @swagger
- *
  * /departamentos:
  *   get:
  *     description: Lista todos departamentos

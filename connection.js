@@ -1,8 +1,9 @@
-import * as dotenv from 'dotenv'
-import mysql from 'mysql'
+
+const dotenv = require('dotenv')
+const mysql = require('mysql')
 dotenv.config()
 
-export const con = mysql.createPool({
+const con = mysql.createPool({
   connectionLimit: 10,
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -28,4 +29,4 @@ con.getConnection((err, connection) => {
   return
 })
 
-export default con
+module.exports = con
