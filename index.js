@@ -44,13 +44,13 @@ app.get('/collection', (req, res) => res.json(require(outputFile)))
  *       200:
  *         description: Exibe todos departamentos em um vetor
  */
-app.get('/departamentos', (req, res) => {
-  con.query('SELECT * FROM DEPARTAMENTOS ORDER BY nome', (err, result) => {
-    if (err) {
-      res.send(err)
-    }
-    res.send(result)
-  })
+app.get('/departamentos', async (req, res) => {
+  try {
+    const [rows] = await con.query('SELECT * FROM DEPARTAMENTOS ORDER BY nome')
+    res.send(rows)
+  } catch(e) {
+    res.send(e)
+  }
 })
 
 /**
@@ -65,12 +65,15 @@ app.get('/departamentos', (req, res) => {
  *       200:
  *         description: Exibe todos departamentos em um vetor
  */
-app.get('/departamentos/:idDepartamento', (req, res) => {
+app.get('/departamentos/:idDepartamento', async (req, res) => {
   const { idDepartamento } = req.params
-
-  con.query(`SELECT * FROM DEPARTAMENTOS WHERE id_departamento = ${idDepartamento}`, (err, result) => {
-    res.send(result)
-  })
+  
+  try {
+    const [rows] = await con.query(`SELECT * FROM DEPARTAMENTOS WHERE id_departamento = ${idDepartamento}`)
+    res.status(200).json(rows)
+  } catch (e) {
+    res.status(500).json({ message: 'Erro ao listar registros.', exception: e})
+  }
 })
 
 /**
@@ -94,19 +97,22 @@ app.get('/departamentos/:idDepartamento', (req, res) => {
  *       200:
  *         description: Insere um depto. no banco
  */
-app.post('/departamentos', (req, res) => {
+app.post('/departamentos', async (req, res) => {
   const { nome, sigla } = req.body
-  if (nome != undefined && sigla != undefined) {
-    con.query(`INSERT INTO DEPARTAMENTOS (nome, sigla) VALUES ('${nome}', '${sigla}')`, (err, result) => {
-      res.send(result)
-    })
-  } else {
-    res.send({
-      'message': 'Nome ou Sigla não foram enviados'
-    })
+
+  if (!nome || !sigla) {
+    res.status(400).json({ message: 'Um ou mais campos obrigatórios faltando.'})
+  }
+
+  try {
+    const [result] = await con.query('INSERT INTO DEPARTAMENTOS (nome, sigla) VALUES (?, ?)', [nome, sigla])
+    console.log(result)
+
+    res.status(201).json({ message: 'Registro inserido com sucesso.', details: result})
+  } catch(e) {
+    res.status(500).json({ message: 'Erro ao inserir o registro.', exception: e})
   }
 })
-
 
 /**
  * @swagger
@@ -129,18 +135,25 @@ app.post('/departamentos', (req, res) => {
  *       200:
  *         description: Insere um depto. no banco
  */
-app.put('/departamentos/:idDepartamento', (req, res) => {
+app.put('/departamentos/:idDepartamento', async (req, res) => {
   const { idDepartamento } = req.params
   const { nome, sigla } = req.body
 
-  if (nome != undefined && sigla != undefined) {
-    con.query(`UPDATE DEPARTAMENTOS SET nome = '${nome}', sigla = '${sigla}' WHERE id_departamento = ${idDepartamento}`, (err, result) => {
-      res.send(result)
-    })
-  } else {
-    res.send({
-      'message': 'Nome ou Sigla não foram enviados'
-    })
+  if (!nome || !sigla || !idDepartamento) {
+    res.status(400).json({ message: 'Um ou mais campos obrigatórios faltando.'})
+  }
+
+  try {
+    const [result] = await con.query('UPDATE DEPARTAMENTOS SET nome = ?, sigla = ? WHERE id_departamento = ?', [nome, sigla, idDepartamento])
+    console.log(result)
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Registro não encontrado.' })
+    }
+
+    res.status(201).json({ message: 'Registro inserido com sucesso.', details: result})
+  } catch(e) {
+    res.status(500).json({ message: 'Erro ao inserir o registro.', exception: e})
   }
 })
 
@@ -162,12 +175,24 @@ app.put('/departamentos/:idDepartamento', (req, res) => {
  *       200:
  *         description: Insere um depto. no banco
  */
-app.delete('/departamentos/:idDepartamento', (req, res) => {
+app.delete('/departamentos/:idDepartamento', async (req, res) => {
   const { idDepartamento } = req.params
 
-  con.query(`DELETE FROM DEPARTAMENTOS WHERE id_departamento = ${idDepartamento}`, (err, result) => {
-    res.send(result)
-  })
+  if (!idDepartamento) {
+    res.status(400).json({ message: 'Um ou mais campos obrigatórios faltando.'})
+  }
+  try {
+    const [result] = await con.query('DELETE FROM DEPARTAMENTOS WHERE id_departamento = ?', [idDepartamento])
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Registro não encontrado.' })
+    }
+
+    res.status(200).json({ message: 'Registro removido com sucesso.', details: result})
+
+  } catch(e) {
+    res.status(500).json({ message: 'Erro ao excluir o registro.', exception: e})
+  }
 })
 
 
