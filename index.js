@@ -206,6 +206,10 @@ app.delete('/departamentos/:idDepartamento', async (req, res) => {
   }
 })
 
+app.get('/', (req, res) => {
+  res.send('Welcome to API')
+})
+
 
 const port = 80
 app.listen(port, () => {
