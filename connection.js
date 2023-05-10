@@ -1,5 +1,7 @@
-const dotenv = require('dotenv')
-const mysql = require('mysql2/promise')
+//const dotenv = require('dotenv')
+import dotenv from 'dotenv'
+import mysql from 'mysql2/promise'
+//const mysql = require('mysql2/promise')
 dotenv.config()
 
 const con = mysql.createPool({
@@ -25,4 +27,4 @@ con.getConnection().then(connection => {
   }
 })
 
-module.exports = con
+export default con

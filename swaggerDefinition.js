@@ -1,4 +1,4 @@
-module.exports = {
+const swaggerDefinition = {
   swagger: '2.0',
   info: {
     title: 'NODEJS - Express API',
@@ -8,3 +8,5 @@ module.exports = {
   host: 'localhost',
   basePath: '/'
 }
+
+export default swaggerDefinition

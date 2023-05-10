@@ -1,24 +1,35 @@
-const express = require('express')
-const cors = require('cors')
-const bodyParser = require('body-parser')
-const con = require('./connection.js')
+//const express = require('express')
+import express from 'express'
+//const cors = require('cors')
+import cors from 'cors'
+//const bodyParser = require('body-parser')
+import bodyParser from 'body-parser'
 
-const swaggerUI = require('swagger-ui-express')
-const swaggerJSDoc = require('swagger-jsdoc')
-const swaggerOptions = require('./swaggerOptions')
+import con  from './connection.js'
+
+//const swaggerUI = require('swagger-ui-express')
+import swaggerUI from 'swagger-ui-express'
+//const swaggerJSDoc = require('swagger-jsdoc')
+import swaggerJSDoc from 'swagger-jsdoc'
+
+//const swaggerOptions = require('./swaggerOptions')
+//import swaggerOptions from './swaggerOptions.js'
 
 // Para gerar o arquivo de definitions para o Postman
-const swaggerDefinition = require('./swaggerDefinition.js')
-const swaggerAutogen = require('swagger-autogen')()
+//const swaggerDefinition = require('./swaggerDefinition.js')
+//import swaggerDefinition from './swaggerDefinition.js'
+
+//const swaggerAutogen = require('swagger-autogen')()
+//import swaggerAutogen from 'swagger-autogen'
 const outputFile = './swagger-output.json'
 const endpointsFiles = ['./index.js']
-swaggerAutogen(outputFile, endpointsFiles, swaggerDefinition)
+//swaggerAutogen(outputFile, endpointsFiles, swaggerDefinition)
 
 const app = express()
 app.use(cors())
 
 // Adicionamos o gerador de documentação em uma const
-const swaggerSpecs = swaggerJSDoc(swaggerOptions)
+//const swaggerSpecs = swaggerJSDoc(swaggerOptions)
 
 
 // Middleware para arquivos estáticos (CSS, IMG, JS, etc)
@@ -27,10 +38,10 @@ app.use(express.static('public'))
 // Configuramos o servidor para utilizar o middleware do body-parser
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpecs))
+//app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpecs))
 
 // Usa o 
-app.get('/collection', (req, res) => res.json(require(outputFile)))
+//app.get('/collection', (req, res) => res.json(require(outputFile)))
 
 
 /**

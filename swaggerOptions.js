@@ -1,6 +1,8 @@
-const swaggerDefinition = require('./swaggerDefinition')
+import swaggerDefinition from './swaggerDefinition'
 
-module.exports = {
+const swaggerOptions = {
   swaggerDefinition,
   apis: ['index.js']
 }
+
+export default swaggerOptions
