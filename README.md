@@ -1,9 +1,16 @@
 # API-NODE
+API Projetada para rodar em plataforma Node >= 18.*.
 
+Recomenda-se utilizar o NVM para fazer o switch para a versão correta/testada do node presente no arquivo .nvmrc deste projeto.
 ## Como executar:
 ```
 npm install
 npm start
+```
+
+Para executar em modo debug:
+```
+npm run dev
 ```
 
 ## Rotas disponíveis:
