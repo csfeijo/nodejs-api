@@ -1,16 +1,15 @@
-//const express = require('express')
+import dotenv from 'dotenv'
 import express from 'express'
-//const cors = require('cors')
 import cors from 'cors'
-//const bodyParser = require('body-parser')
 import bodyParser from 'body-parser'
-
 import con  from './connection.js'
+
 
 //const swaggerUI = require('swagger-ui-express')
 import swaggerUI from 'swagger-ui-express'
 //const swaggerJSDoc = require('swagger-jsdoc')
 import swaggerJSDoc from 'swagger-jsdoc'
+import axios from 'axios'
 
 //const swaggerOptions = require('./swaggerOptions')
 //import swaggerOptions from './swaggerOptions.js'
@@ -25,6 +24,7 @@ const outputFile = './swagger-output.json'
 const endpointsFiles = ['./index.js']
 //swaggerAutogen(outputFile, endpointsFiles, swaggerDefinition)
 
+dotenv.config()
 const app = express()
 app.use(cors())
 
@@ -42,6 +42,37 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // Usa o 
 //app.get('/collection', (req, res) => res.json(require(outputFile)))
+
+
+app.get('/edge-functions', (req, res) => {
+  const options = {
+    headers: {
+      'Accept': 'application/json; version=3',
+      'Authorization': `Token ${process.env.PERSONAL_TOKEN}`
+    }}
+
+  axios.get('https://api.azionapi.net/edge_functions?page_size=200', options)
+    .then(response => {
+      const results = response.data.results
+
+      const filter = results.map((fun) => {
+        return {
+          id: fun.id,
+          name: fun.name
+        }
+      })
+
+
+      res.json(filter)
+      return
+    })
+    .catch(error => {
+      res.status(500).send(`ERROR: ${error}`)
+      console.error(error)
+    })
+
+  
+})
 
 
 /**
