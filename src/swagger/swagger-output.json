@@ -11,7 +11,7 @@
     "http"
   ],
   "paths": {
-    "/collection": {
+    "/": {
       "get": {
         "description": "",
         "parameters": [],
@@ -143,6 +143,20 @@
           },
           "404": {
             "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/edge-functions": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "500": {
             "description": "Internal Server Error"
