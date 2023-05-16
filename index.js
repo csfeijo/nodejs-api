@@ -1,0 +1,29 @@
+import dotenv from 'dotenv'
+import express from 'express'
+import cors from 'cors'
+import bodyParser from 'body-parser'
+
+dotenv.config()
+const app = express()
+app.use(cors())
+
+
+// Middleware para arquivos estáticos (CSS, IMG, JS, etc)
+// passamos o nome do diretorio que será publico
+app.use(express.static('public'))
+
+// Configuramos o servidor para utilizar o middleware do body-parser
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
+
+const port = 80
+app.listen(port, () => {
+  console.log('Example app listening at http://localhost:%s', port)
+})
+
+app.get('/', (req, res) => {
+  res.send('Welcome to API')
+})
+
+
