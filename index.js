@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
-
+import edgeFunctionsRoutes from './src/routes/edgeFunctionsRoutes.js'
 dotenv.config()
 const app = express()
 app.use(cors())
@@ -15,7 +15,7 @@ app.use(express.static('public'))
 // Configuramos o servidor para utilizar o middleware do body-parser
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-
+edgeFunctionsRoutes(app)
 
 const port = 80
 app.listen(port, () => {
