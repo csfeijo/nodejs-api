@@ -12,13 +12,16 @@ const edgeFunctionsRoutes = (app) => {
     axios.get('https://api.azionapi.net/edge_functions?page_size=200', options)
       .then(response => {
         const results = response.data.results
-
         const filter = results.map((fun) => {
           return {
             id: fun.id,
-            name: fun.name
+            name: fun.name,
+            reference_count: fun.reference_count,
+            active: fun.active,
+            version: fun.version
           }
         })
+        
         res.json(filter)
         return
       })
