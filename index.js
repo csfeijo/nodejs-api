@@ -4,6 +4,7 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import edgeFunctionsRoutes from './src/routes/edgeFunctionsRoutes.js'
 import departamentosRoutes from './src/routes/departamentosRoutes.js'
+import pugRoutes from './src/routes/pugRoutes.js'
 dotenv.config()
 const app = express()
 app.use(cors())
@@ -19,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 edgeFunctionsRoutes(app)
 departamentosRoutes(app)
+pugRoutes(app)
 
 const port = 80
 app.listen(port, () => {
