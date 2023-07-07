@@ -86,7 +86,7 @@ const departamentosRoutes = (app) => {
  * @swagger
  *
  * /departamentos/:id:
- *   post:
+ *   patch:
  *     description: Altera os dados de um departamento
  *     produces:
  *       - text/json
@@ -103,25 +103,30 @@ const departamentosRoutes = (app) => {
  *       200:
  *         description: Insere um depto. no banco
  */
-  app.put('/departamentos/:idDepartamento', async (req, res) => {
+  app.patch('/departamentos/:idDepartamento', async (req, res) => {
     const { idDepartamento } = req.params
     const { nome, sigla } = req.body
 
-    if (!nome || !sigla || !idDepartamento) {
+    if (!idDepartamento) {
       res.status(400).json({ message: 'Um ou mais campos obrigatórios faltando.'})
     }
-
+    
+    const departamento = {}
+    if (nome) departamento.nome = nome
+    if (sigla) departamento.sigla = sigla
+    
     try {
-      const [result] = await con.query('UPDATE DEPARTAMENTOS SET nome = ?, sigla = ? WHERE id_departamento = ?', [nome, sigla, idDepartamento])
-      console.log(result)
+      const updateQuery = 'UPDATE DEPARTAMENTOS SET ? WHERE id_departamento = ?'
+      const [result] = await con.query(updateQuery, [departamento, idDepartamento])
+
 
       if (result.affectedRows === 0) {
         return res.status(404).json({ message: 'Registro não encontrado.' })
       }
 
-      res.status(201).json({ message: 'Registro inserido com sucesso.', details: result})
+      res.status(201).json({ message: 'Registro atualizado com sucesso.', details: result})
     } catch(e) {
-      res.status(500).json({ message: 'Erro ao inserir o registro.', exception: e})
+      res.status(500).json({ message: 'Erro ao atualizar o registro.', exception: e})
     }
   })
 
