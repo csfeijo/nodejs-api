@@ -24,6 +24,22 @@ const envVariablesRouters = (app) => {
       })
   })
 
+  app.get('/variables/:uuid', (req, res) => {
+    
+    const { uuid } = req.params
+
+    axios.get(`https://api.azion.net/variables/${uuid}`, options)
+      .then(response => {
+        const results = response.data
+        res.json(results)
+        return
+      })
+      .catch(error => {
+        res.status(500).send(`ERROR: ${error}`)
+        console.error(error)
+      })
+  })
+
   app.post('/variables', (req, res) => {
     
     const { key, value, secret } = req.body
