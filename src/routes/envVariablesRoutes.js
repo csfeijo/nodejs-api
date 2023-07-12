@@ -76,5 +76,20 @@ const envVariablesRouters = (app) => {
       })
   })
   
+  app.delete('/variables/:uuid', (req, res) => {
+    const { uuid } = req.params
+   
+
+    axios.delete(`${baseURL}/variables/${uuid}`, options)
+      .then(response => {
+        const results = response.data
+        res.json(results)
+        return
+      })
+      .catch(error => {
+        res.status(400).json({ code: error.code, message: error.message })
+      })
+  })
+
 }
 export default envVariablesRouters
