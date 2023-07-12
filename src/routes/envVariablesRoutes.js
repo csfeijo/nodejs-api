@@ -52,11 +52,25 @@ const envVariablesRouters = (app) => {
         return
       })
       .catch(error => {
-        res.status(500).send(`ERROR: ${error}`)
-        console.error(error)
+        res.status(400).json({ code: error.code, message: error.message })
       })
   })
 
+  app.put('/variables/:uuid', (req, res) => {
+    const { uuid } = req.params
+    const { key, value, secret } = req.body
+
+    axios.put(`https://api.azion.net/variables/${uuid}`, { key, value, secret }, options)
+      .then(response => {
+
+        const results = response.data
+        res.json(results)
+        return
+      })
+      .catch(error => {
+        res.status(400).json({ code: error.code, message: error.message })
+      })
+  })
   
 }
 export default envVariablesRouters
