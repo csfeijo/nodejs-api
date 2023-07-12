@@ -1,4 +1,8 @@
 import axios from 'axios'
+import dotenv from 'dotenv'
+dotenv.config()
+
+const baseURL = process.env.VARIABLES_BASE_URL
 
 const envVariablesRouters = (app) => {
 
@@ -11,7 +15,7 @@ const envVariablesRouters = (app) => {
 
   app.get('/variables', (req, res) => {
     
-    axios.get('https://api.azion.net/variables', options)
+    axios.get(`${baseURL}/variables`, options)
       .then(response => {
         console.log('>>>', response)
         const results = response.data
@@ -28,7 +32,7 @@ const envVariablesRouters = (app) => {
     
     const { uuid } = req.params
 
-    axios.get(`https://api.azion.net/variables/${uuid}`, options)
+    axios.get(`${baseURL}/variables/${uuid}`, options)
       .then(response => {
         const results = response.data
         res.json(results)
@@ -44,7 +48,7 @@ const envVariablesRouters = (app) => {
     
     const { key, value, secret } = req.body
 
-    axios.post('https://api.azion.net/variables', { key, value, secret }, options)
+    axios.post(`${baseURL}/variables`, { key, value, secret }, options)
       .then(response => {
 
         const results = response.data
@@ -60,7 +64,7 @@ const envVariablesRouters = (app) => {
     const { uuid } = req.params
     const { key, value, secret } = req.body
 
-    axios.put(`https://api.azion.net/variables/${uuid}`, { key, value, secret }, options)
+    axios.put(`${baseURL}/variables/${uuid}`, { key, value, secret }, options)
       .then(response => {
 
         const results = response.data
