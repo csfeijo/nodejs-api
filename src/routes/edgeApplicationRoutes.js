@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 const baseURL = process.env.VARIABLES_BASE_URL
-// const baseURL = 'https://api.azionapi.net'
 
 const edgeApplicationRoutes = (app) => {
 
@@ -25,10 +24,10 @@ const edgeApplicationRoutes = (app) => {
       })
   })
 
-  app.get('/edge-functions/:id', (req, res) => {    
+  app.get('/api/edge_applications/:id', (req, res) => {    
     const { id } = req.params
 
-    axios.get(`https://api.azionapi.net/edge_functions/${id}`, options)
+    axios.get(`${baseURL}/edge_applications/${id}`, options)
       .then(response => {
         
         res.json(response.data)
@@ -39,5 +38,21 @@ const edgeApplicationRoutes = (app) => {
         console.error(error)
       })
   })
+
+  app.delete('/api/edge_applications/:id', (req, res) => {    
+    const { id } = req.params
+    
+    axios.delete(`${baseURL}/edge_applications/${id}`, options)
+      .then(response => {
+        
+        res.json(response.data)
+        return
+      })
+      .catch(error => {
+        res.status(500).send(`ERROR: ${error}`)
+        console.error(error)
+      })
+  })
+
 }
 export default edgeApplicationRoutes
