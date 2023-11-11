@@ -5,6 +5,7 @@ import bodyParser from 'body-parser'
 import edgeFunctionsRoutes from './src/routes/edgeFunctionsRoutes.js'
 import envVariablesRouters from './src/routes/envVariablesRoutes.js'
 import edgeApplicationRoutes from './src/routes/edgeApplicationRoutes.js'
+import gitHubChangelogRoutes from './src/routes/gitHubChangelogRoutes.js'
 import departamentosRoutes from './src/routes/departamentosRoutes.js'
 dotenv.config()
 const app = express()
@@ -22,6 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 edgeApplicationRoutes(app)
 edgeFunctionsRoutes(app)
 envVariablesRouters(app)
+gitHubChangelogRoutes(app)
 departamentosRoutes(app)
 
 const port = 80
