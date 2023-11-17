@@ -43,7 +43,10 @@ const gitHubChangelogRoutes = (app) => {
           .filter(pr => new Date(pr.merged_at) > new Date(startPeriod))
           .map((pr,index) => {
 
-            return `${index} -> ${pr.merged_at}  - ${pr.title}` 
+            if (pr.labels.some(label => label.name === 'DEPLOY')) {
+              return `<b><hr/>${index+1} -> ${pr.title}</b>`  
+            }
+            return `${index+1} . ${pr.title.substring(0, 80)}` 
           })
 
 
